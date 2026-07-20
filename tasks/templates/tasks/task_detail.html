@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Détails de la tâche - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="mb-3">
+            <a href="{% url 'task_list' %}" class="text-secondary text-decoration-none fw-medium">&larr; Retour au tableau de bord</a>
+        </div>
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+            <div class="card-header bg-white border-0 pt-4 px-4 d-flex justify-content-between align-items-center">
+                {% if task.status == 'pending' %}
+                    <span class="badge bg-warning bg-opacity-10 text-warning-dark border border-warning border-opacity-25 px-3 py-1.5 rounded-pill fs-7">⏳ À faire</span>
+                {% elif task.status == 'in_progress' %}
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-1.5 rounded-pill fs-7">⚡ En cours</span>
+                {% elif task.status == 'completed' %}
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-1.5 rounded-pill fs-7">✅ Terminée</span>
+                {% endif %}
+                
+                {% if task.priority == 'low' %}
+                    <span class="badge bg-success text-white px-3 py-1.5 rounded-pill fs-7">Priorité Basse</span>
+                {% elif task.priority == 'medium' %}
+                    <span class="badge bg-warning text-dark px-3 py-1.5 rounded-pill fs-7">Priorité Moyenne</span>
+                {% elif task.priority == 'high' %}
+                    <span class="badge bg-danger text-white px-3 py-1.5 rounded-pill fs-7">Priorité Haute</span>
+                {% elif task.priority == 'urgent' %}
+                    <span class="badge bg-dark text-white px-3 py-1.5 rounded-pill fs-7 fw-bold">Priorité Urgente</span>
+                {% endif %}
+            </div>
+            
+            <div class="card-body px-4 pb-4">
+                <h2 class="fw-bold text-dark mt-2 mb-3 {% if task.status == 'completed' %}text-decoration-line-through text-muted{% endif %}">
+                    {{ task.title }}
+                </h2>
+                                <div class="bg-light p-3 rounded-3 mb-4">
+                    <h6 class="text-muted small uppercase mb-2 fw-semibold">Description</h6>
+                    <p class="mb-0 text-secondary" style="white-space: pre-line;">
+                        {{ task.description|default:"*Aucune description fournie pour cette tâche.*" }}
+                    </p>
+                </div>
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <div class="p-2 border rounded-3 bg-white">
+                            <span class="text-muted small d-block">Date limite</span>
+                            <span class="fw-medium text-dark {% if task.is_overdue %}text-danger fw-bold{% endif %}">
+                                {{ task.due_date|date:"d F Y, H:i"|default:"Aucune date de fin." }}
+                                {% if task.is_overdue %}
+                                    <span class="badge bg-danger text-white ms-1">RETARD</span>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-2 border rounded-3 bg-white">
+                            <span class="text-muted small d-block">👤 Auteur / Propriétaire</span>
+                            <span class="fw-medium text-dark">{{ task.author.username }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-2 border rounded-3 bg-white">
+                            <span class="text-muted small d-block"> Date de création</span>
+                            <span class="fw-medium text-secondary small">{{ task.created_at|date:"d M Y, H:i" }}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-2 border rounded-3 bg-white">
+                            <span class="text-muted small d-block"> Dernière modification</span>
+                            <span class="fw-medium text-secondary small">{{ task.updated_at|date:"d M Y, H:i" }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="text-muted my-4">
+                
+                <!-- Actions Buttons -->
+                <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'task_update' task.id %}" class="btn btn-outline-primary rounded-3 px-3">
+                             Modifier
+                        </a>
+                        <a href="{% url 'task_delete' task.id %}" class="btn btn-outline-danger rounded-3 px-3">
+                             Supprimer
+                        </a>
+                    </div>
+                    
+                    {% if task.status != 'completed' %}
+                        <!-- Quick Mark Complete Action Form -->
+                        <form action="{% url 'task_update' task.id %}" method="get" class="d-inline">
+                            <a href="{% url 'task_update' task.id %}?quick_complete=true" class="btn btn-success text-white rounded-3 px-3">
+                                ✓ Marquer comme terminée
+                            </a>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-warning-dark {
+        color: #b27a00;
+    }
+</style>
+{% endblock %}

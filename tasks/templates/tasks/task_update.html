@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Modifier la tâche - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="mb-3">
+            <a href="{% url 'task_detail' task.id %}" class="text-secondary text-decoration-none fw-medium">&larr; Retour aux détails</a>
+        </div>
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <div class="mb-4">
+                    <h2 class="mt-2 fw-bold text-dark">Modifier la Tâche</h2>
+                    <p class="text-muted">Mettez à jour les informations, l'état d'avancement ou la date limite de votre tâche.</p>
+                </div>
+                <form method="post" class="needs-validation">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-flex justify-content-end gap-2 mt-4">
+                        <a href="{% url 'task_detail' task.id %}" class="btn btn-outline-secondary rounded-3 px-4">Annuler</a>
+                        <button type="submit" class="btn btn-primary text-white rounded-3 px-4">Enregistrer les modifications</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('quick_complete') === 'true') {
+            const statusSelect = document.getElementById('id_status');
+            if (statusSelect) {
+                statusSelect.value = 'completed';
+            }
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

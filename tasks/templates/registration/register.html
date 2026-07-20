@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Création de compte - TaskFlow{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <h2 class="mt-2 fw-bold text-dark">Inscription</h2>
+                    <p class="text-muted">Rejoignez TaskFlow et gérez vos priorités académiques</p>
+                </div>
+                
+                <form method="post" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    
+                    {{ form|crispy }}
+                    
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg rounded-3 fs-6">S'enregistrer</button>
+                    </div>
+                </form>
+                
+                <hr class="my-4 text-muted">
+                
+                <div class="text-center">
+                    <p class="mb-0 text-muted">Déjà inscrit ?</p>
+                    <a href="{% url 'login' %}" class="text-primary fw-medium text-decoration-none">Connectez-vous à votre compte</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
