@@ -27,31 +27,6 @@ TaskFlow est une application de gestion de tâches développée avec Django. Ell
 - Crispy Forms
 - HTML /CSS
 
-
-## 📁 Structure du projet
-taskflow_project/
-├── manage.py
-├── taskflow/
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── tasks/
-│   ├── models.py
-│   ├── views.py
-│   ├── forms.py
-│   ├── admin.py
-│   ├── urls.py
-│   ├── templates/
-│   │   └── tasks/
-│   │       ├── task_list.html
-│   │       ├── task_detail.html
-│   │       ├── task_form.html
-│   │       └── task_confirm_delete.html
-│   └── static/
-     └── css/
-
-
-
 ##  Sécurité
 
 - Authentification Django intégrée
